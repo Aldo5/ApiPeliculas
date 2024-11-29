@@ -11,6 +11,9 @@ import com.mx.ApiPeliculas.repository.PeliculaRepository;
 
 
 
+
+
+
 @Service
 public class PeliculasServImp {
 
@@ -37,6 +40,37 @@ public class PeliculasServImp {
 		}
 		if (bandera == false)
 			repository.save(pelicula);
+		return bandera;
+	}
+	
+	@Transactional(readOnly = true)
+	public Peliculas buscar(Long id) {
+		return repository.findById(id).orElse(null);
+	}
+	@Transactional
+	public boolean editar(Peliculas pelicula) {
+		boolean bandera = false;
+		for (Peliculas p : repository.findAll()) {
+			if (p.getId().equals(pelicula.getId())) {
+				repository.save(pelicula);
+				bandera = true;
+				break;
+			}
+		}
+		return bandera;
+	}
+	
+	@Transactional
+	public boolean eliminar(Peliculas pelicula) {
+		boolean bandera = false;
+		for (Peliculas p : repository.findAll()) {
+			if (p.getId().equals(pelicula.getId())) {
+				// repository.delete(producto);
+				repository.deleteById(pelicula.getId());
+				bandera = true;
+				break;
+			}
+		}
 		return bandera;
 	}
 }
